@@ -1,19 +1,17 @@
 import React, { Component } from "react";
-import { Link, withRouter } from 'react-router-dom';
 import PropTypes from "prop-types"; 
 import { connect } from "react-redux";
 import { createWarden } from "../../actions/wardenActions";
-import axios from "axios";
 
 
 
 class AddWarden extends Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       firstName: "",
-      wardenId: "",
+      wardenid: "",
       phoneNumber: "",
       email:"",
       lastName:"",
@@ -34,15 +32,7 @@ class AddWarden extends Component {
     }
 
   }
-  componentDidMount(){
-    const apiCall = async () => {
-      
-    const res = await axios.post("http://localhost:8080/api/warden", {
-      wardenId:1
-    });
-    }
-    apicall ();
-  }
+  
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -53,14 +43,15 @@ class AddWarden extends Component {
  
     const newWarden = {
       firstName: this.state.firstName,
-      wardenId: this.state.wardenId,
-      phoneNumber: this.state.phoneNumber,
+      wardenid: this.state.wardenid,
+      mobileNumber: this.state.mobileNumber,
       email:this.state.email,
       lastName:this.state.lastName,
       hostelId:this.state.hostelId,
       password:this.state.password
     };
-    console.log(newWarden);
+    this.props.createWarden(newWarden, this.props.history);
+    
    
   }
 
@@ -82,11 +73,11 @@ class AddWarden extends Component {
                       type="text"
                       className="form-control form-control-lg "
                       placeholder="Warden Id"
-                      name="wardenId"
-                      value={this.state.wardenId}
+                      name="wardenid"
+                      value={this.state.wardenid}
                       onChange={this.onChange}
                     />
-               
+                    <p>{errors}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -97,7 +88,7 @@ class AddWarden extends Component {
                       value={this.state.firstName}
                       onChange={this.onChange}
                     />
-                   
+                    <p>{errors}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -108,18 +99,18 @@ class AddWarden extends Component {
                       value={this.state.lastName}
                       onChange={this.onChange}
                     />
-                 
+                    <p>{errors}</p>
                   </div>
                   <div className="form-group">
                     <input
                     type="text"
                       className="form-control form-control-lg"
-                      placeholder="phoneNumber"
-                      name="phoneNumber"
-                      value={this.state.phoneNumber}
+                      placeholder="mobileNumber"
+                      name="mobileNumber"
+                      value={this.state.mobileNumber}
                       onChange={this.onChange}
                     />
-                
+                    <p>{errors}</p>
                   </div>
                   
                   <div className="form-group">
@@ -131,7 +122,7 @@ class AddWarden extends Component {
                       value={this.state.email}
                       onChange={this.onChange}
                     />
-                   
+                    <p>{errors}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -142,6 +133,7 @@ class AddWarden extends Component {
                       value={this.state.hostelId}
                       onChange={this.onChange}
                     />
+                    <p>{errors}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -152,7 +144,7 @@ class AddWarden extends Component {
                       value={this.state.password}
                       onChange={this.onChange}
                     />
-                    
+                    <p>{errors}</p>
                   </div>
                   
                 

@@ -1,20 +1,33 @@
 import React, { Component } from "react";
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from "prop-types"; 
+import { connect } from "react-redux";
+import { createHostel } from "../../actions/hostelActions";
+import axios from "axios";
 
-class AddHostelRooms extends Component {
+class AddHostel extends Component {
   constructor() {
     super();
 
     this.state = {
-      roomName: "",
-      roomId: "",
-      numberOfBeds: "",
+      hostelName: "",
+      hostelid: "",
+      numberOfRooms: "",
       hostelType:"",
-      floorNumber:""
+      wardenId:""
 
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  //life cycle hooks
+  componentWillReceiveProps(nextProps){
+    if(nextProps.errors){
+      this.setState({errors:nextProps.errors});
+    }
+
   }
 
   onChange(e) {
@@ -23,45 +36,38 @@ class AddHostelRooms extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const newProject = {
-      roomName: this.state.roomName,
-      roomId: this.state.roomId,
-      numberOfBeds: this.state.numberOfBeds,
+    const newHostel = {
+      hostelName: this.state.hostelName,
+      hostelid: this.state.hostelid,
+      numberOfRooms: this.state.numberOfRooms,
       hostelType:this.state.hostelType,
-      floorNumber:this.state.floorNumber
+      wardenId:this.state.wardenId
     };
-
-    console.log(newProject);
+    this.props.createHostel(newHostel, this.props.history);
+    console.log(newHostel);
   }
 
   render() {
     return (
       <div>
         {
-          //check name attribute input fields
-          //create constructor
-          //set state
-          //set value on input fields
-          //create onChange function
-          //set onChange on each input field
-          //bind on constructor
-          //check state change in the react extension
+          
         }
 
         <div className="project">
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h5 className="display-4 text-center">Create Hostel Rooms </h5>
+                <h5 className="display-4 text-center">Create Hostels </h5>
                 <hr />
                 <form onSubmit={this.onSubmit}>
                   <div className="form-group">
                     <input
                       type="text"
                       className="form-control form-control-lg "
-                      placeholder="Room Id"
-                      name="roomId"
-                      value={this.state.roomId}
+                      placeholder="Hostel Id"
+                      name="hostelid"
+                      value={this.state.hostelid}
                       onChange={this.onChange}
                     />
                   </div>
@@ -69,9 +75,9 @@ class AddHostelRooms extends Component {
                     <input
                       type="text"
                       className="form-control form-control-lg"
-                      placeholder="Hostel ID"
-                      name="hostelId"
-                      value={this.state.hostelId}
+                      placeholder="Hostel Name"
+                      name="hostelName"
+                      value={this.state.hostelName}
                       onChange={this.onChange}
                     />
                   </div>
@@ -79,9 +85,9 @@ class AddHostelRooms extends Component {
                     <input
                     type="text"
                       className="form-control form-control-lg"
-                      placeholder="NumberOfBeds"
-                      name="numberOfBeds"
-                      value={this.state.numberOfBeds}
+                      placeholder="NumberOfRooms"
+                      name="numberOfRooms"
+                      value={this.state.numberOfRooms}
                       onChange={this.onChange}
                     />
                   </div>
@@ -89,9 +95,9 @@ class AddHostelRooms extends Component {
                     <input
                     type="text"
                       className="form-control form-control-lg"
-                      placeholder="Floor Number"
-                      name="floorNumber"
-                      value={this.state.floorNumber}
+                      placeholder="Warden Id"
+                      name="wardenId"
+                      value={this.state.wardenId}
                       onChange={this.onChange}
                     />
                   </div>
@@ -122,4 +128,17 @@ class AddHostelRooms extends Component {
   }
 }
 
-export default AddHostelRooms;
+AddHostel.propTypes = {
+  createHostel: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+
+export default connect(
+  mapStateToProps,
+  {createHostel}
+)(AddHostel);
